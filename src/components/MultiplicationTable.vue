@@ -49,19 +49,20 @@ const showCalculations = ref(false)
 
     <section class="multiplication-table">
 
-      <div class="row" v-for="row in numOfRows" :class="{ 'highlighted' : rowHighlight === row }">
+      <table>
+        <tr v-for="row in numOfRows" :class="{ 'highlighted' : row === rowHighlight }">
 
-        <div class="column" v-for="column in numOfColumns" :class="{ 'highlighted' : columnHighlight === column }">
+          <td v-for="column in numOfColumns" :class="{ 'highlighted' : column === columnHighlight }">
 
-          {{ row * column }}
+            {{ row * column }}
 
-          <div v-if="showCalculations" class="calculation">
-            ({{ row }} * {{ column }})
-          </div>
+            <div v-if="showCalculations" class="calculation">
+              ({{ row }} * {{ column }})
+            </div>
 
-        </div>
-
-      </div>
+          </td>
+        </tr>
+      </table>
 
     </section>
   </section>
@@ -111,39 +112,28 @@ section.container {
   }
 
   section.multiplication-table {
-    background-color: lightgray;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
+    table {
+      background-color: lightgray;
+      border-collapse: collapse;
 
-    div.row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-
-      &.highlighted {
-        background-color: red;
-        color: white;
-      }
-
-      div.column {
-        display: flex;
-        flex: 1;
-        justify-content: center;
-        padding: 5px;
-        flex-direction: column;
-        border: 1px solid black;
-        align-items: center;
-
+      tr {
         &.highlighted {
-          font-weight: bold;
-          font-size: 1.2rem;
+          background-color: red;
+          color: white;
         }
 
-        .calculation {
-          font-size: 0.7rem;
+        td {
+          text-align: center;
+          padding: 0.5rem;
+
+          &.highlighted {
+            background-color: red;
+            color: white;
+          }
+
+          .calculation {
+            font-size: 0.7rem;
+          }
         }
       }
     }

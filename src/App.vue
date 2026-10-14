@@ -3,5 +3,5 @@ import MultiplicationTable from "./components/MultiplicationTable.vue";
 </script>
 
 <template>
-  <MultiplicationTable/>
+  <multiplication-table/>
 </template>

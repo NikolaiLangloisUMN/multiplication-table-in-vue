@@ -54,7 +54,9 @@ const showCalculations = ref(false)
 
           <td v-for="column in numOfColumns" :class="{ 'highlighted' : column === columnHighlight }">
 
-            {{ row * column }}
+            <span :class="{ 'bolded' : (row === rowHighlight) && (column === columnHighlight) && (rowHighlight * columnHighlight === row * column) }">
+              {{ row * column }}
+            </span>
 
             <div v-if="showCalculations" class="calculation">
               ({{ row }} * {{ column }})
@@ -129,6 +131,12 @@ section.container {
           &.highlighted {
             background-color: red;
             color: white;
+          }
+
+          .bolded {
+            font-weight: bold;
+            color: black;
+            font-size: 115%;
           }
 
           .calculation {

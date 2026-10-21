@@ -81,6 +81,7 @@ section.container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 90vw;
 
   h1 {
     margin-top: 0;
@@ -114,6 +115,9 @@ section.container {
   }
 
   section.multiplication-table {
+    overflow-x: scroll;
+    max-width: 100%;
+
     table {
       background-color: lightgray;
       border-collapse: collapse;

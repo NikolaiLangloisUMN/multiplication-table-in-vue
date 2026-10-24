@@ -1,50 +1,75 @@
 <script setup>
-import {ref} from "vue"
+import {computed, ref} from "vue"
+import InputField from "./InputField.vue";
 
-const name = ref('Nikolai')
+const firstName = ref(null)
+const lastName = ref(null)
 const numOfRows = ref(10)
-const numOfColumns = ref(10)
+const numOfCols = ref(10)
 const rowHighlight = ref(5)
-const columnHighlight = ref(5)
+const colHighlight = ref(5)
 const showCalculations = ref(false)
+
+const fullName = computed(() => {
+  if (firstName.value && lastName.value) {
+    return `${ firstName.value } ${ lastName.value }`
+  } else if (firstName.value && !lastName.value) {
+    return firstName.value
+  } else if (!firstName.value && lastName.value) {
+    return lastName.value
+  } else {
+    return ' there'
+  }
+})
 </script>
 
 <template>
 
   <section class="container">
-    <h1 v-if="name">Hello {{ name }}!</h1>
-    <h1 v-else>Hello there!</h1>
+
+    <h1>Hello {{ fullName }}!</h1>
 
     <div class="controls">
-      <label id="name">
-        What's your name?
-        <input id="name" type="text" v-model="name"/>
-      </label>
+      <input-field v-model="firstName"
+                   label-copy="What's your <em>first name</em>?"
+                   type="text"
+                   name="first-name"/>
 
-      <label id="rows">
-        <span>How many <span class="emphasis">rows</span> should we have?</span>
-        <input id="rows" type="number" min="1" max="100" v-model.number="numOfRows"/>
-      </label>
+      <input-field v-model="lastName"
+                   label-copy="What's your <em>last name</em>?"
+                   type="text"
+                   name="last-name"/>
 
-      <label id="columns">
-        <span>How many <span class="emphasis">columns</span> should we have?</span>
-        <input id="columns" type="number" min="1" max="100" v-model.number="numOfColumns"/>
-      </label>
+      <input-field v-model="numOfRows"
+                   label-copy="How many <em>rows</em> should we have?"
+                   type="number"
+                   name="num-of-rows"
+                   min="1" max="40"/>
 
-      <label id="rowHighlight">
-        <span>Which <span class="emphasis">row</span> should we highlight?</span>
-        <input id="rowHighlight" type="number" min="1" :max="numOfRows" v-model.number="rowHighlight"/>
-      </label>
+      <input-field v-model="numOfCols"
+                   label-copy="How many <em>columns</em> should we have?"
+                   type="number"
+                   name="num-of-cols"
+                   min="1" max="40"/>
 
-      <label id="columnHighlight">
-        <span>Which <span class="emphasis">column</span> should we highlight?</span>
-        <input id="columnHighlight" type="number" min="1" :max="numOfColumns" v-model.number="columnHighlight"/>
-      </label>
+      <input-field v-model="rowHighlight"
+                   label-copy="Which <em>row</em> should we highlight?"
+                   type="number"
+                   name="row-highlight"
+                   min="1" :max="numOfRows"/>
 
-      <label id="showCalculations">
-        Should we show the math?
-        <input id="showCalculations" type="checkbox" v-model="showCalculations"/>
-      </label>
+      <input-field v-model="colHighlight"
+                   label-copy="Which <em>column</em> should we highlight?"
+                   type="number"
+                   name="col-highlight"
+                   min="1" :max="numOfCols"/>
+
+      <input-field v-model="showCalculations"
+                   label-copy="Should we show the math?"
+                   type="checkbox"
+                   name="show-calculations"
+                   min="1" :max="numOfCols"/>
+
     </div>
 
     <section class="multiplication-table">
@@ -52,9 +77,10 @@ const showCalculations = ref(false)
       <table>
         <tr v-for="row in numOfRows" :class="{ 'highlighted' : row === rowHighlight }">
 
-          <td v-for="column in numOfColumns" :class="{ 'highlighted' : column === columnHighlight }">
+          <td v-for="column in numOfCols" :class="{ 'highlighted' : column === colHighlight }">
 
-            <span :class="{ 'bolded' : (row === rowHighlight) && (column === columnHighlight) && (rowHighlight * columnHighlight === row * column) }">
+            <span
+                :class="{ 'bolded' : (row === rowHighlight) && (column === colHighlight) && (rowHighlight * colHighlight === row * column) }">
               {{ row * column }}
             </span>
 
@@ -93,25 +119,6 @@ section.container {
     row-gap: 20px;
     column-gap: 20px;
     margin-bottom: 30px;
-
-    > label {
-      display: flex;
-      justify-content: space-between;
-      column-gap: 20px;
-      align-items: center;
-
-      span.emphasis {
-        font-style: italic;
-      }
-    }
-
-    input {
-      font-size: 1rem;
-
-      &[type='text'] {
-        text-align: center;
-      }
-    }
   }
 
   section.multiplication-table {
@@ -145,6 +152,7 @@ section.container {
 
           .calculation {
             font-size: 0.7rem;
+            white-space: nowrap;
           }
         }
       }

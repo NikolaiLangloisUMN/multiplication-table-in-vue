@@ -26,7 +26,6 @@ const fullName = computed(() => {
 <template>
 
   <section class="container">
-
     <h1>Hello {{ fullName }}!</h1>
 
     <div class="controls">
@@ -78,11 +77,7 @@ const fullName = computed(() => {
         <tr v-for="row in numOfRows" :class="{ 'highlighted' : row === rowHighlight }">
 
           <td v-for="column in numOfCols" :class="{ 'highlighted' : column === colHighlight }">
-
-            <span
-                :class="{ 'bolded' : (row === rowHighlight) && (column === colHighlight) && (rowHighlight * colHighlight === row * column) }">
-              {{ row * column }}
-            </span>
+            {{ row * column }}
 
             <div v-if="showCalculations" class="calculation">
               ({{ row }} * {{ column }})
@@ -94,7 +89,6 @@ const fullName = computed(() => {
 
     </section>
   </section>
-
 </template>
 
 <style scoped>
@@ -144,17 +138,17 @@ section.container {
             color: white;
           }
 
-          .bolded {
-            font-weight: bold;
-            color: black;
-            font-size: 115%;
-          }
-
           .calculation {
             font-size: 0.7rem;
             white-space: nowrap;
           }
         }
+      }
+
+      tr.highlighted > td.highlighted {
+        font-weight: bold;
+        color: black;
+        font-size: 115%;
       }
     }
   }

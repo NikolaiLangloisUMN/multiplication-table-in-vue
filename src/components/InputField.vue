@@ -13,11 +13,11 @@ const props = defineProps({
     required: true,
   },
   min: {
-    type: Number,
+    type: String,
     required: false,
   },
   max: {
-    type: Number,
+    type: String,
     required: false,
   }
 })

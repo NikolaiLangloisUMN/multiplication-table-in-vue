@@ -9,6 +9,7 @@ const numOfCols = ref(10)
 const rowHighlight = ref(5)
 const colHighlight = ref(5)
 const showCalculations = ref(false)
+const calculatedResult = ref(null)
 
 const fullName = computed(() => {
   if (firstName.value && lastName.value) {
@@ -21,6 +22,11 @@ const fullName = computed(() => {
     return ' there'
   }
 })
+
+const calculateValue = (row, col) => {
+  let value = row * col
+  calculatedResult.value = `${ row } * ${ col } = ${ value }`
+}
 </script>
 
 <template>
@@ -55,28 +61,34 @@ const fullName = computed(() => {
                    label-copy="Which <em>row</em> should we highlight?"
                    type="number"
                    name="row-highlight"
-                   min="1" :max="numOfRows"/>
+                   min="1" :max="numOfRows.toString()"/>
 
       <input-field v-model="colHighlight"
                    label-copy="Which <em>column</em> should we highlight?"
                    type="number"
                    name="col-highlight"
-                   min="1" :max="numOfCols"/>
+                   min="1" :max="numOfCols.toString()"/>
 
       <input-field v-model="showCalculations"
                    label-copy="Should we show the math?"
                    type="checkbox"
                    name="show-calculations"
-                   min="1" :max="numOfCols"/>
+                   min="1" :max="numOfCols.toString()"/>
 
+      <p v-if="showCalculations && calculatedResult" v-text="calculatedResult"/>
     </div>
+
 
     <section class="multiplication-table">
 
       <table>
-        <tr v-for="row in numOfRows" :class="{ 'highlighted' : row === rowHighlight }">
+        <tr v-for="row in numOfRows"
+            :class="{ 'highlighted' : row === rowHighlight }">
 
-          <td v-for="column in numOfCols" :class="{ 'highlighted' : column === colHighlight }">
+          <td v-for="column in numOfCols"
+              :class="{ 'highlighted' : column === colHighlight }"
+              @click="calculateValue(row, column)">
+
             {{ row * column }}
 
             <div v-if="showCalculations" class="calculation">
@@ -141,6 +153,11 @@ section.container {
           .calculation {
             font-size: 0.7rem;
             white-space: nowrap;
+          }
+
+          &:hover {
+            cursor: pointer;
+            border: 1px solid black;
           }
         }
       }
